@@ -13,22 +13,28 @@ class Snake
 		// Sets initial moving direction to top
 		Snake(Vector2 pos);
 
+		/* snake symbol */
 		// returns head symbol of the snake
 		char getSymbolHead() const;
 		// return tail symbol of the snake
 		char getSymbolTail() const;
 		
+		/* snake score */
 		// returns the current score of the snake
 		unsigned getScore() const;
-		// Makes the snake larger and adds score another point to the scores after eating a food
+		// Makes the snake larger and adds another point to the score after eating a food
 		unsigned addPoint();
 
 		// Returns all positions of the snake parts
 		const std::vector<Vector2>& getPositions() const;
 
+		/* snake movement */
 		// moves the snake to the current direction
 		// returns new position of the head
 		const Vector2& move();
+		// sets the new directions in which the snake should move
+		void setDirection(DIRECTIONS newDirection);
+
 	private:
 		char symbol_head, symbol_tail; // stores the symbol of the Snake head and the snake tail which should be printed in the console
 		unsigned int score; // stores the snake's score
