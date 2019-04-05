@@ -78,8 +78,7 @@ void Game::gameLogic()
     {
         // quit the game
         case QUIT:
-            isGameOver = true;
-            endwin();
+            endGame();
             break;
 
         // movement
@@ -102,6 +101,8 @@ void Game::gameLogic()
         default:
             break;
     }
+
+    checkForCollisions();
 
     snake->move();
 }
@@ -163,4 +164,16 @@ void Game::printPlayfield()
     {
         mvprintw(y, playfieldDimensions->x-1, "#");
     }
+}
+
+void Game::endGame()
+{
+    isGameOver = true;
+    endwin();
+}
+
+void Game::checkForCollisions()
+{
+    if(snake->isTouchingItself())
+        endGame();
 }

@@ -35,6 +35,9 @@ class Snake
 		// sets the new directions in which the snake should move
 		void setDirection(DIRECTIONS newDirection);
 
+		/* collision detection */
+		bool isTouchingItself();
+
 	private:
 		char symbol_head, symbol_tail; // stores the symbol of the Snake head and the snake tail which should be printed in the console
 		unsigned int score; // stores the snake's score
