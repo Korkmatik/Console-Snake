@@ -10,10 +10,10 @@ class Game
 
         // initializes the game, like created food and the snake
         // returns true if initialization succeded
-        bool initializeGame(int width, int heigth);
+        bool initializeGame(int width=100, int heigth=30);
 
         // Starts the Game
-        void start();
+        void start(unsigned FPS=30);
 
     private:
         // to store the information if the game was initialized
@@ -39,5 +39,8 @@ class Game
         void gameLogic();
         // prints the game on the screen
         void renderGame();
+
+        // prints the playfield on the console
+        void printPlayfield();
 
 };
