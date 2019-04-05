@@ -114,3 +114,20 @@ void Snake::setDirection(Snake::DIRECTIONS newDirection)
 {
 	this->movingDirection = newDirection;
 }
+
+bool Snake::isTouchingItself()
+{
+	Vector2 headPos = positions[0];
+
+	int headX = headPos.x;
+	int headY = headPos.y;
+
+	for(int i = 1; i < positions.size(); i++)
+	{
+		if(positions[i].x == headX && positions[i].y == headY)
+			return true;
+	}
+	
+
+	return false;
+}

@@ -52,4 +52,10 @@ class Game
         void printSnake();
         // prints the playfield on the console
         void printPlayfield();
+
+        /* game functionality */
+        // end the current game
+        void endGame();
+        // checks if any of the game objects collide with each other
+        void checkForCollisions();
 };
