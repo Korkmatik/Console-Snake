@@ -13,7 +13,7 @@ int main()
 {
 	Game snakeGame{};
 
-	if(snakeGame.initializeGame(80, 50))
+	if(snakeGame.initializeGame())
 		snakeGame.start();
 
 	return 0;
