@@ -46,7 +46,7 @@ void Game::start(unsigned FPS)
         gameLogic();
 
         // setting FPS
-        usleep(1000/FPS);
+        usleep(1750000/FPS);
     }
 }
 
@@ -62,6 +62,8 @@ void Game::initializeNCurses()
     cbreak();
     // don't print user input on screen
     noecho();
+    // disable cursor
+    curs_set(false);
 }
 
 void Game::handleUserInput()
@@ -75,27 +77,65 @@ void Game::gameLogic()
     switch (userInput)
     {
         // quit the game
-        case 'q':
+        case QUIT:
             isGameOver = true;
             endwin();
             break;
+
+        // movement
+        case MOVE_UP:
+            snake->setDirection(Snake::DIRECTIONS::TOP);
+            break;
     
+        case MOVE_DOWN:
+            snake->setDirection(Snake::DIRECTIONS::BOTTOM);
+            break;
+        
+        case MOVE_LEFT:
+            snake->setDirection(Snake::DIRECTIONS::LEFT);
+            break;
+
+        case MOVE_RIGHT:
+            snake->setDirection(Snake::DIRECTIONS::RIGHT);
+            break;
+
         default:
             break;
     }
+
+    snake->move();
 }
 
 void Game::renderGame()
 {
     // Clearing the screen
-    //erase();
+    erase();
 
-    /* insert here the game objects which shall be printed */
+    /* insert the game objects which shall be printed here */
     
+    printSnake();
     printPlayfield();
 
     // prints on the ncurses screen
     refresh();
+}
+
+void Game::printSnake()
+{
+    // getting all current positions of the snake
+    auto snakePos = snake->getPositions();
+
+    // getting the character which represents the snake tail
+    char snakeTail = snake->getSymbolTail();
+
+    // printing the head of the snake on the console
+    mvprintw(snakePos[0].y, snakePos[0].x, "%c", snake->getSymbolHead());
+
+    // printing the tail of the snake on the console
+    for(int i = 1; i < snakePos.size(); i++)
+    {
+        mvprintw(snakePos[i].y, snakePos[i].x, "%c", snakeTail);
+    }
 }
 
 void Game::printPlayfield()
@@ -123,5 +163,4 @@ void Game::printPlayfield()
     {
         mvprintw(y, playfieldDimensions->x-1, "#");
     }
-    
 }
