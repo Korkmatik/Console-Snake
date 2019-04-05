@@ -83,18 +83,22 @@ void Game::gameLogic()
 
         // movement
         case MOVE_UP:
+        case KEY_UP:
             snake->setDirection(Snake::DIRECTIONS::TOP);
             break;
     
         case MOVE_DOWN:
+        case KEY_DOWN:
             snake->setDirection(Snake::DIRECTIONS::BOTTOM);
             break;
         
         case MOVE_LEFT:
+        case KEY_LEFT:
             snake->setDirection(Snake::DIRECTIONS::LEFT);
             break;
 
         case MOVE_RIGHT:
+        case KEY_RIGHT:
             snake->setDirection(Snake::DIRECTIONS::RIGHT);
             break;
 
