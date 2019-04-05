@@ -1,6 +1,6 @@
 #include <iostream>
 
-#include "Snake.hpp"
+#include "Game.hpp"
 
 void print(const std::vector<Vector2>& pos)
 {
@@ -11,25 +11,10 @@ void print(const std::vector<Vector2>& pos)
 
 int main()
 {
-	Snake s(Vector2(5, 5));
+	Game snakeGame{};
 
-	auto pos = s.getPositions();
-	
-	print(pos);
-
-	std::cout << "head-symbol: " << s.getSymbolHead() << " --tail-symbol" << s.getSymbolTail() << std::endl;
-	
-	s.move();
-	
-	pos = s.getPositions();
-
-	print(pos);
-	
-	s.addPoint();
-
-	pos = s.getPositions();
-
-	print(pos);
+	if(snakeGame.initializeGame(80, 50))
+		snakeGame.start();
 
 	return 0;
 }
