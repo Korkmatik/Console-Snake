@@ -109,3 +109,8 @@ const Vector2& Snake::move()
 
 	return positions[0];
 }
+
+void Snake::setDirection(Snake::DIRECTIONS newDirection)
+{
+	this->movingDirection = newDirection;
+}
