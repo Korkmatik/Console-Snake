@@ -1,3 +1,6 @@
+#ifndef GAME_H
+#define GAME_H
+
 #include <ncurses.h>
 
 #include "Snake.hpp"
@@ -59,3 +62,5 @@ class Game
         // checks if any of the game objects collide with each other
         void checkForCollisions();
 };
+
+#endif
