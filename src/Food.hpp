@@ -8,6 +8,7 @@ class Food
 {
     public:
         // To generate a food object, the food object needs to know the playfield size
+        // srand should be initialized elsewhere
         Food(Vector2 screenDimensions);
 
         // calculates a random position for the food in the playfield

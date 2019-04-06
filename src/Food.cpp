@@ -18,8 +18,8 @@
      // position the food
      while (true) {
          // food should be inside the playfield 
-         randXPos = (rand() % (screenDimensions.x - 1)) + 1;
-         randYPos = (rand() % (screenDimensions.y - 1)) + 1;
+         randXPos = (rand() % (screenDimensions.x - 2)) + 1;
+         randYPos = (rand() % (screenDimensions.y - 2)) + 1;
 
         // checking if the food would already intersect with the snake
          auto snakePositions = snake->getPositions();
