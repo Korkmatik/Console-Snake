@@ -18,12 +18,14 @@ class Game
 
         // initializes the game, like created food and the snake
         // returns true if initialization succeded
-        bool initializeGame(int width=100, int heigth=30);
+        bool initializeGame(int width=50, int heigth=30);
 
         // Starts the Game
         void start(unsigned FPS=30);
 
     private:
+        // stores if the console can print colors
+        bool hasColor;
         // to store the information if the game was initialized
         bool isGameInitialized;
         // determines wether the game ends
@@ -34,6 +36,9 @@ class Game
         enum CONTROLS_TYPE  {   QUIT='q', // Game functionality
                                 MOVE_UP='w', MOVE_DOWN='s', MOVE_LEFT='a', MOVE_RIGHT='d' // movement
                             };
+        
+        // colors of the game objects
+        enum GAME_OBJECT_COLORS { C_FOOD=1, C_SNAKE, C_WALL };
 
         // Stores width and height of the playfield
         Vector2* playfieldDimensions;
@@ -48,6 +53,8 @@ class Game
         /* initializer functions */
         // initializes the ncurses library
         void initializeNCurses();
+        // initializes the ncurses colors for the game layout
+        void initializeColors();
 
 
         /* main game loop */
@@ -72,7 +79,9 @@ class Game
         void endGame();
         // checks if any of the game objects collide with each other
         void checkForCollisions();
+        // checks if the snake touches the wall
         bool isSnakeTouchingWall();
+        // event to be happen after the snake touched food
         void snakeIsTouchingFoodEvent();
 };
 
