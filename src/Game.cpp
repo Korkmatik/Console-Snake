@@ -1,9 +1,14 @@
 #include <unistd.h>
+#include <time.h>
+#include <stdlib.h>
 
 #include "Game.hpp"
 
 Game::Game()
 {
+    // initializing srand for the food object
+    srand(time(NULL));
+
     isGameInitialized = false;
 
     playfieldDimensions = nullptr;
@@ -68,7 +73,7 @@ void Game::start(unsigned FPS)
         gameLogic();
 
         // setting FPS
-        usleep(1900000/FPS);
+        usleep(2000000/FPS);
     }
 }
 
@@ -76,6 +81,9 @@ void Game::initializeNCurses()
 {
     // allocate memory for ncurses
     initscr();
+    // activating ability to use colors if the console can display them
+    if (hasColor = has_colors())
+        initializeColors();
     // don't wait until the user actually inputs anything
     nodelay(stdscr, true);
     // activate function keys and arrow keys
@@ -86,6 +94,18 @@ void Game::initializeNCurses()
     noecho();
     // disable cursor
     curs_set(false);
+}
+
+void Game::initializeColors()
+{   
+    start_color();
+
+    // Color of the food
+    init_pair(C_FOOD, COLOR_YELLOW, COLOR_BLACK);
+    // Color of the snake
+    init_pair(C_SNAKE, COLOR_GREEN, COLOR_BLACK);
+    // Color of the walls of the playfield
+    init_pair(C_WALL, COLOR_WHITE, COLOR_WHITE);
 }
 
 void Game::handleUserInput()
@@ -156,6 +176,10 @@ void Game::printSnake()
     // getting the character which represents the snake tail
     char snakeTail = snake->getSymbolTail();
 
+    // setting the color of the snake if console can output it
+    if (hasColor)
+        attron(COLOR_PAIR(C_SNAKE));
+
     // printing the head of the snake on the console
     mvprintw(snakePos[0].y, snakePos[0].x, "%c", snake->getSymbolHead());
 
@@ -164,10 +188,17 @@ void Game::printSnake()
     {
         mvprintw(snakePos[i].y, snakePos[i].x, "%c", snakeTail);
     }
+
+    // disabling snake color 
+    if (hasColor)
+        attroff(COLOR_PAIR(C_SNAKE));
 }
 
 void Game::printPlayfield()
 {
+    if(hasColor)
+        attron(COLOR_PAIR(C_WALL));
+
     // Top row of the playfield
     for(int x = 0; x < playfieldDimensions->x; x++)
     {
@@ -191,11 +222,18 @@ void Game::printPlayfield()
     {
         mvprintw(y, playfieldDimensions->x-1, "#");
     }
+
+    if (hasColor)
+        attroff(COLOR_PAIR(C_WALL));
 }
 
 void Game::printFood()
 {
+    if (hasColor)
+        attron(COLOR_PAIR(C_FOOD));
     mvprintw(foodPosition.y, foodPosition.x, "%c", food->getFoodSymbol());
+    if (hasColor)
+        attroff(COLOR_PAIR(C_FOOD));
 }
 
 void Game::endGame()
