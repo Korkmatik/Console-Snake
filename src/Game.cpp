@@ -8,6 +8,19 @@ Game::Game()
 
     playfieldDimensions = nullptr;
     snake = nullptr;
+    food = nullptr;
+}
+
+Game::~Game()
+{
+    if (playfieldDimensions != nullptr)
+        delete playfieldDimensions;
+        
+    if (snake != nullptr)
+        delete snake;
+
+    if (food != nullptr)
+        delete food;
 }
 
 bool Game::initializeGame(int width, int heigth)
@@ -24,6 +37,15 @@ bool Game::initializeGame(int width, int heigth)
     {
         return false;
     }
+
+    // Initializing the food
+    food = new Food(*playfieldDimensions);
+    if (food == nullptr) {
+        return false;
+    }
+
+    // placing the food on the playfield
+    foodPosition = food->spawnFood(snake);
 
     isGameOver = false;
 
@@ -46,7 +68,7 @@ void Game::start(unsigned FPS)
         gameLogic();
 
         // setting FPS
-        usleep(1750000/FPS);
+        usleep(1900000/FPS);
     }
 }
 
@@ -118,6 +140,7 @@ void Game::renderGame()
 
     /* insert the game objects which shall be printed here */
     
+    printFood();
     printSnake();
     printPlayfield();
 
@@ -170,6 +193,11 @@ void Game::printPlayfield()
     }
 }
 
+void Game::printFood()
+{
+    mvprintw(foodPosition.y, foodPosition.x, "%c", food->getFoodSymbol());
+}
+
 void Game::endGame()
 {
     isGameOver = true;
@@ -178,6 +206,33 @@ void Game::endGame()
 
 void Game::checkForCollisions()
 {
-    if(snake->isTouchingItself())
+    if(snake->isTouchingItself() || isSnakeTouchingWall())
         endGame();
+    else if(food->isTouchingSnake(snake))
+        snakeIsTouchingFoodEvent();
+}
+
+bool Game::isSnakeTouchingWall()
+{
+    bool snakeIsTouching = false;
+
+    Vector2 snakeHeadPos = snake->getPositions()[0];
+
+    
+    if (
+        snakeHeadPos.x <= 0 || // snake is touching the left wall
+        snakeHeadPos.x >= playfieldDimensions->x || // snake is touching right wall
+        snakeHeadPos.y <= 0 || // snake is touching top wall
+        snakeHeadPos.y >= playfieldDimensions->y // snake is touching bottom wall
+        )
+        snakeIsTouching = true;
+
+
+    return snakeIsTouching;        
+}
+
+void Game::snakeIsTouchingFoodEvent()
+{
+    snake->addPoint();
+    foodPosition = food->spawnFood(snake);
 }
