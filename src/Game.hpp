@@ -3,13 +3,18 @@
 
 #include <ncurses.h>
 
+#include "Vector2.hpp"
 #include "Snake.hpp"
+#include "Food.hpp"
 
 class Game
 {
     public:
         // Constructor takes width and height of the playfield
         Game();
+
+        // to release all resources
+        ~Game();
 
         // initializes the game, like created food and the snake
         // returns true if initialization succeded
@@ -34,6 +39,10 @@ class Game
         Vector2* playfieldDimensions;
         // The snake(player) of the game
         Snake* snake;
+        // Food for the snake
+        Food* food;
+        // stores the food's position
+        class Vector2 foodPosition;
 
 
         /* initializer functions */
@@ -55,12 +64,16 @@ class Game
         void printSnake();
         // prints the playfield on the console
         void printPlayfield();
+        // prints the food on the console
+        void printFood();
 
         /* game functionality */
         // end the current game
         void endGame();
         // checks if any of the game objects collide with each other
         void checkForCollisions();
+        bool isSnakeTouchingWall();
+        void snakeIsTouchingFoodEvent();
 };
 
 #endif
