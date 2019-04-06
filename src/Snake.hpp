@@ -1,6 +1,9 @@
+#ifndef SNAKE_H
+#define SNAKE_H
+
 #include <vector>
 
-#include "Vector2.hpp"
+#include "Food.hpp"
 
 class Snake 
 {
@@ -47,3 +50,5 @@ class Snake
 		DIRECTIONS movingDirection; // stores the current moving direction of the snake
 
 };
+
+#endif
