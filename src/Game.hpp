@@ -2,6 +2,7 @@
 #define GAME_H
 
 #include <ncurses.h>
+#include <array>
 
 #include "Vector2.hpp"
 #include "Snake.hpp"
@@ -38,7 +39,16 @@ class Game
                             };
         
         // colors of the game objects
-        enum GAME_OBJECT_COLORS { C_FOOD=1, C_SNAKE, C_WALL };
+        enum GAME_OBJECT_COLORS { C_FOOD=1, C_SNAKE, C_WALL, C_TITLE };
+        // game title
+        const std::array<const char*, 5> SNAKE_TITLE = 
+            {   
+                "####  ####  ####  # #  ####",
+                "#     #  #  #  #  # #  #   ",
+                "####  #  #  ####  ##   ### ",
+                "   #  #  #  #  #  # #  #   ",
+                "####  #  #  #  #  # #  ####"
+            };
 
         // Stores width and height of the playfield
         Vector2* playfieldDimensions;
@@ -73,6 +83,8 @@ class Game
         void printPlayfield();
         // prints the food on the console
         void printFood();
+        // prints the UI elements like game title and stats
+        void printUI();
 
         /* game functionality */
         // end the current game

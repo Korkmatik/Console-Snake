@@ -1,6 +1,7 @@
 #include <unistd.h>
 #include <time.h>
 #include <stdlib.h>
+#include <string.h>
 
 #include "Game.hpp"
 
@@ -26,6 +27,8 @@ Game::~Game()
 
     if (food != nullptr)
         delete food;
+
+    endwin();
 }
 
 bool Game::initializeGame(int width, int heigth)
@@ -106,6 +109,8 @@ void Game::initializeColors()
     init_pair(C_SNAKE, COLOR_GREEN, COLOR_BLACK);
     // Color of the walls of the playfield
     init_pair(C_WALL, COLOR_WHITE, COLOR_WHITE);
+    // Color of the title in the UI Elements
+    init_pair(C_TITLE, COLOR_CYAN, COLOR_BLACK);
 }
 
 void Game::handleUserInput()
@@ -163,6 +168,7 @@ void Game::renderGame()
     printFood();
     printSnake();
     printPlayfield();
+    printUI();
 
     // prints on the ncurses screen
     refresh();
@@ -236,10 +242,43 @@ void Game::printFood()
         attroff(COLOR_PAIR(C_FOOD));
 }
 
+void Game::printUI()
+{
+    // initial x positions of the ui elements 
+    int offset = playfieldDimensions->x + 5;
+    // initial y position of the ui
+    int y = 0;
+    // index variable for loops
+    int i = 0;
+
+    // activate color for the title
+    if(hasColor)
+        attron(COLOR_PAIR(C_TITLE));
+
+    // prints the title of the game right to the playfield
+    for (; i < SNAKE_TITLE.size(); y++, i++) {
+        mvprintw(y, offset, "%s", SNAKE_TITLE[i]);
+    }
+    
+    // prints a line underneath the title
+    y += 1;
+    for(i=0; i < strlen(SNAKE_TITLE[0]); i++) {
+        mvprintw(y, offset + i, "#");
+    }
+
+    if(hasColor)
+        attroff(COLOR_PAIR(C_TITLE));
+
+    // computes the position where the stats should be printed 
+    y = SNAKE_TITLE.size() + 3;
+
+    // print the score of the snake
+    mvprintw(y++, offset, "Score: %d", snake->getScore());
+}
+
 void Game::endGame()
 {
     isGameOver = true;
-    endwin();
 }
 
 void Game::checkForCollisions()
